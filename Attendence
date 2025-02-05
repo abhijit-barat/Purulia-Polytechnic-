@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>College Attendance System</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            text-align: center; 
+            padding: 20px; 
+            background: #f0f8ff;
+            color: #333;
+        }
+        button { 
+            padding: 10px 20px; 
+            font-size: 16px; 
+            cursor: pointer; 
+            background: #28a745; 
+            color: white; 
+            border: none; 
+            border-radius: 5px; 
+        }
+        button:hover {
+            background: #218838;
+        }
+        table { 
+            width: 100%; 
+            margin-top: 20px; 
+            border-collapse: collapse; 
+            background: #fff;
+        }
+        th, td { 
+            border: 1px solid black; 
+            padding: 10px; 
+            text-align: center; 
+        }
+        select, input {
+            padding: 5px;
+            margin: 5px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+    <h2>Purulia Polytechnic Attendance</h2>
+    <input type="text" id="name" placeholder="Enter your name" required>
+    <input type="text" id="roll" placeholder="Enter your roll number" required>
+    <select id="trade">
+        <option value="ME">ME</option>
+        <option value="CE">CE</option>
+        <option value="EE">EE</option>
+        <option value="MET">MET</option>
+        <option value="ETC">ETC</option>
+    </select>
+    <select id="year">
+        <option value="1st Year">1st Year</option>
+        <option value="2nd Year">2nd Year</option>
+        <option value="3rd Year">3rd Year</option>
+    </select>
+    <br>
+    <button onclick="markAttendance()">Mark Present</button>
+    <p id="status"></p>
+
+    <h3>Attendance List</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Roll</th>
+                <th>Trade</th>
+                <th>Year</th>
+                <th>Status</th>
+                <th>Time</th>
+            </tr>
+        </thead>
+        <tbody id="attendanceTable"></tbody>
+    </table>
+
+    <script>
+        const collegeLat = 23.333;
+        const collegeLon = 86.366;
+        const radius = 0.2;
+
+        function getDistance(lat1, lon1, lat2, lon2) {
+            const toRad = (x) => x * Math.PI / 180;
+            const R = 6371;
+            const dLat = toRad(lat2 - lat1);
+            const dLon = toRad(lon2 - lon1);
+            const a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLon/2) * Math.sin(dLon/2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+            return R * c;
+        }
+
+        function markAttendance() {
+            const name = document.getElementById("name").value;
+            const roll = document.getElementById("roll").value;
+            const trade = document.getElementById("trade").value;
+            const year = document.getElementById("year").value;
+
+            if (!name || !roll || !trade || !year) {
+                alert("Please fill all fields");
+                return;
+            }
+            
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(position => {
+                    const userLat = position.coords.latitude;
+                    const userLon = position.coords.longitude;
+                    const distance = getDistance(userLat, userLon, collegeLat, collegeLon);
+
+                    if (distance <= radius) {
+                        addAttendance(name, roll, trade, year, "Present");
+                    } else {
+                        document.getElementById("status").innerText = "You are outside the college area.";
+                    }
+                }, () => {
+                    alert("Location access denied. Please enable GPS.");
+                });
+            } else {
+                alert("Geolocation is not supported by this browser.");
+            }
+        }
+
+        function addAttendance(name, roll, trade, year, status) {
+            const time = new Date().toLocaleTimeString();
+            const record = { name, roll, trade, year, status, time };
+            let attendance = JSON.parse(localStorage.getItem("attendance")) || [];
+            attendance.push(record);
+            localStorage.setItem("attendance", JSON.stringify(attendance));
+            updateTable();
+            document.getElementById("status").innerText = "Attendance marked successfully!";
+        }
+
+        function updateTable() {
+            const attendance = JSON.parse(localStorage.getItem("attendance")) || [];
+            const tableBody = document.getElementById("attendanceTable");
+            tableBody.innerHTML = "";
+            attendance.forEach(record => {
+                let row = tableBody.insertRow();
+                row.insertCell(0).innerText = record.name;
+                row.insertCell(1).innerText = record.roll;
+                row.insertCell(2).innerText = record.trade;
+                row.insertCell(3).innerText = record.year;
+                row.insertCell(4).innerText = record.status;
+                row.insertCell(5).innerText = record.time;
+            });
+        }
+
+        window.onload = updateTable;
+    </script>
+</body>
+</html>
