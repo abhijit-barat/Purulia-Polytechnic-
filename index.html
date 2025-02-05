@@ -2,124 +2,188 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>College Attendance System</title>
     <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #f0f8ff, #e6f7ff);
-            color: #333;
+        * {
+            box-sizing: border-box;
             margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
             padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
             min-height: 100vh;
+            transition: background 0.3s, color 0.3s;
         }
+
+        :root {
+            --bg-color: #f8f9fa;
+            --text-color: #2c3e50;
+            --primary-color: #28a745;
+            --secondary-color: #218838;
+            --input-bg: #ffffff;
+            --input-border: #dee2e6;
+            --table-bg: #ffffff;
+            --table-border: #dee2e6;
+        }
+
+        .dark-mode {
+            --bg-color: #1a1a1a;
+            --text-color: #f8f9fa;
+            --input-bg: #2c3e50;
+            --input-border: #495057;
+            --table-bg: #2c3e50;
+            --table-border: #495057;
+        }
+
         .container {
-            background: white;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            width: 100%;
-            max-width: 800px;
+            background: var(--input-bg);
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            max-width: 1000px;
+            margin: 0 auto;
         }
+
         h2 {
-            color: #28a745;
-            margin-bottom: 20px;
-            font-size: 2em;
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+            text-align: center;
         }
-        h3 {
-            color: #218838;
-            margin-top: 30px;
-            font-size: 1.5em;
+
+        .input-group {
+            display: grid;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
         }
-        input, select {
+
+        input, select, button {
             width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 16px;
+            padding: 0.8rem;
+            border: 2px solid var(--input-border);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: var(--input-bg);
+            color: var(--text-color);
         }
+
+        input:focus, select:focus {
+            border-color: var(--primary-color);
+            outline: none;
+        }
+
         button {
-            width: 100%;
-            padding: 15px;
-            font-size: 18px;
-            cursor: pointer;
-            background: #28a745;
+            background: var(--primary-color);
             color: white;
-            border: none;
-            border-radius: 5px;
-            transition: background 0.3s ease;
+            cursor: pointer;
         }
+
         button:hover {
-            background: #218838;
+            background: var(--secondary-color);
+            transform: translateY(-1px);
         }
+
         table {
             width: 100%;
-            margin-top: 20px;
+            margin-top: 2rem;
             border-collapse: collapse;
-            background: #fff;
-            border-radius: 10px;
+            background: var(--table-bg);
+            border-radius: 8px;
             overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
         }
+
         th, td {
-            padding: 15px;
+            padding: 1rem;
             text-align: center;
-            border-bottom: 1px solid #ddd;
+            border-bottom: 1px solid var(--table-border);
         }
+
         th {
-            background: #28a745;
+            background: var(--primary-color);
             color: white;
+            font-weight: 600;
         }
-        tr:hover {
-            background: #f1f1f1;
+
+        tr:nth-child(even) {
+            background-color: var(--bg-color);
         }
+
         #status {
-            margin-top: 20px;
-            font-size: 18px;
-            color: #28a745;
+            margin-top: 1rem;
+            text-align: center;
+            font-weight: 500;
+            padding: 0.8rem;
+            border-radius: 8px;
         }
-        @media (max-width: 600px) {
+
+        .toggle-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+        }
+
+        .toggle-buttons button {
+            width: auto;
+            padding: 0.5rem 1rem;
+        }
+
+        .chart-container {
+            margin-top: 2rem;
+        }
+
+        @media (max-width: 480px) {
             .container {
-                padding: 20px;
+                padding: 1.5rem;
             }
-            h2 {
-                font-size: 1.5em;
+
+            button {
+                font-size: 1rem;
+                padding: 0.9rem;
             }
-            h3 {
-                font-size: 1.2em;
-            }
-            input, select, button {
-                font-size: 14px;
+
+            th, td {
+                padding: 0.8rem;
+                font-size: 0.9rem;
             }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h2>Purulia Polytechnic Attendance</h2>
-        <input type="text" id="name" placeholder="Enter your name" required>
-        <input type="text" id="roll" placeholder="Enter your roll number" required>
-        <select id="trade">
-            <option value="ME">ME</option>
-            <option value="CE">CE</option>
-            <option value="EE">EE</option>
-            <option value="MET">MET</option>
-            <option value="ETC">ETC</option>
-        </select>
-        <select id="year">
-            <option value="1st Year">1st Year</option>
-            <option value="2nd Year">2nd Year</option>
-            <option value="3rd Year">3rd Year</option>
-        </select>
-        <button onclick="markAttendance()">Mark Present</button>
+        <div class="toggle-buttons">
+            <button onclick="toggleLanguage()">বাংলা/English</button>
+            <button onclick="toggleDarkMode()">Toggle Dark Mode</button>
+        </div>
+        <h2 id="title">Purulia Polytechnic Attendance</h2>
+        <div class="input-group">
+            <input type="text" id="name" placeholder="Full Name" required>
+            <input type="text" id="roll" placeholder="Roll Number" required>
+            <select id="trade">
+                <option value="ME">Mechanical Engineering</option>
+                <option value="CE">Civil Engineering</option>
+                <option value="EE">Electrical Engineering</option>
+                <option value="MET">Metallurgy</option>
+                <option value="ETC">Electronics & Telecommunication</option>
+            </select>
+            <select id="year">
+                <option value="1st Year">1st Year</option>
+                <option value="2nd Year">2nd Year</option>
+                <option value="3rd Year">3rd Year</option>
+            </select>
+        </div>
+        <button onclick="markAttendance()">Mark Attendance</button>
         <p id="status"></p>
+        <p id="locationInfo"></p>
 
-        <h3>Attendance List</h3>
+        <h3 id="attendanceTitle">Attendance Records</h3>
         <table>
             <thead>
                 <tr>
@@ -133,79 +197,173 @@
             </thead>
             <tbody id="attendanceTable"></tbody>
         </table>
+
+        <h3>Attendance Percentage</h3>
+        <input type="text" id="studentRoll" placeholder="Enter Roll Number">
+        <button onclick="calculatePercentage()">Calculate Percentage</button>
+        <p id="percentageResult"></p>
     </div>
 
     <script>
-        const collegeLat = 23.333;
-        const collegeLon = 86.366;
-        const radius = 0.2;
+        // Configuration
+        const collegeLocation = {
+            lat: 23.333,
+            lon: 86.366,
+            radius: 0.2 // in kilometers
+        };
 
-        function getDistance(lat1, lon1, lat2, lon2) {
-            const toRad = (x) => x * Math.PI / 180;
+        const translations = {
+            en: {
+                title: "Purulia Polytechnic Attendance",
+                namePlaceholder: "Full Name",
+                rollPlaceholder: "Roll Number",
+                markAttendance: "Mark Attendance",
+                attendanceTitle: "Attendance Records",
+                searchPlaceholder: "Search by name or roll",
+                calculatePercentage: "Calculate Percentage",
+                percentagePlaceholder: "Enter Roll Number"
+            },
+            bn: {
+                title: "পুরুলিয়া পলিটেকনিক উপস্থিতি",
+                namePlaceholder: "পুরো নাম",
+                rollPlaceholder: "রোল নম্বর",
+                markAttendance: "উপস্থিতি মার্ক করুন",
+                attendanceTitle: "উপস্থিতির রেকর্ড",
+                searchPlaceholder: "নাম বা রোল দ্বারা অনুসন্ধান করুন",
+                calculatePercentage: "শতাংশ গণনা করুন",
+                percentagePlaceholder: "রোল নম্বর লিখুন"
+            }
+        };
+
+        let currentLanguage = 'en';
+
+        // Utility functions
+        const getDistance = (lat1, lon1, lat2, lon2) => {
             const R = 6371;
-            const dLat = toRad(lat2 - lat1);
-            const dLon = toRad(lon2 - lon1);
-            const a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLon/2) * Math.sin(dLon/2);
-            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-            return R * c;
-        }
+            const dLat = (lat2 - lat1) * Math.PI / 180;
+            const dLon = (lon2 - lon1) * Math.PI / 180;
+            const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                      Math.sin(dLon/2) * Math.sin(dLon/2);
+            return R * (2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)));
+        };
 
-        function markAttendance() {
-            const name = document.getElementById("name").value;
-            const roll = document.getElementById("roll").value;
-            const trade = document.getElementById("trade").value;
-            const year = document.getElementById("year").value;
+        const showStatus = (message, isError = false) => {
+            const statusEl = document.getElementById('status');
+            statusEl.textContent = message;
+            statusEl.style.color = isError ? '#dc3545' : '#28a745';
+            statusEl.style.backgroundColor = isError ? '#f8d7da' : '#d4edda';
+        };
 
-            if (!name || !roll || !trade || !year) {
-                alert("Please fill all fields");
+        const updateLocationInfo = (distance) => {
+            const locationInfo = document.getElementById('locationInfo');
+            locationInfo.textContent = `Distance from college: ${distance.toFixed(2)} km`;
+        };
+
+        // Core functionality
+        const markAttendance = async () => {
+            const inputs = {
+                name: document.getElementById('name').value.trim(),
+                roll: document.getElementById('roll').value.trim(),
+                trade: document.getElementById('trade').value,
+                year: document.getElementById('year').value
+            };
+
+            if (Object.values(inputs).some(value => !value)) {
+                showStatus('Please fill all required fields!', true);
                 return;
             }
-            
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(position => {
-                    const userLat = position.coords.latitude;
-                    const userLon = position.coords.longitude;
-                    const distance = getDistance(userLat, userLon, collegeLat, collegeLon);
 
-                    if (distance <= radius) {
-                        addAttendance(name, roll, trade, year, "Present");
-                    } else {
-                        document.getElementById("status").innerText = "You are outside the college area.";
-                    }
-                }, () => {
-                    alert("Location access denied. Please enable GPS.");
+            try {
+                const position = await new Promise((resolve, reject) => {
+                    navigator.geolocation.getCurrentPosition(resolve, reject);
                 });
-            } else {
-                alert("Geolocation is not supported by this browser.");
+
+                const userCoords = position.coords;
+                const distance = getDistance(
+                    userCoords.latitude,
+                    userCoords.longitude,
+                    collegeLocation.lat,
+                    collegeLocation.lon
+                );
+
+                updateLocationInfo(distance);
+
+                if (distance > collegeLocation.radius) {
+                    showStatus('Attendance restricted to college premises', true);
+                    return;
+                }
+
+                const record = {
+                    ...inputs,
+                    status: 'Present',
+                    timestamp: new Date().toLocaleString()
+                };
+
+                const attendance = JSON.parse(localStorage.getItem('attendance') || '[]');
+                attendance.push(record);
+                localStorage.setItem('attendance', JSON.stringify(attendance));
+                
+                updateTable();
+                showStatus('Attendance recorded successfully!');
+                document.getElementById('name').value = '';
+                document.getElementById('roll').value = '';
+            } catch (error) {
+                showStatus(error.message.includes('denied') 
+                    ? 'Please enable location services' 
+                    : 'Geolocation error', true);
             }
-        }
+        };
 
-        function addAttendance(name, roll, trade, year, status) {
-            const time = new Date().toLocaleTimeString();
-            const record = { name, roll, trade, year, status, time };
-            let attendance = JSON.parse(localStorage.getItem("attendance")) || [];
-            attendance.push(record);
-            localStorage.setItem("attendance", JSON.stringify(attendance));
+        const updateTable = () => {
+            const attendance = JSON.parse(localStorage.getItem('attendance') || '[]');
+            const tbody = document.getElementById('attendanceTable');
+            
+            tbody.innerHTML = attendance.map(record => `
+                <tr>
+                    <td>${record.name}</td>
+                    <td>${record.roll}</td>
+                    <td>${record.trade}</td>
+                    <td>${record.year}</td>
+                    <td style="color: ${record.status === 'Present' ? '#28a745' : '#dc3545'}">
+                        ${record.status}
+                    </td>
+                    <td>${record.timestamp}</td>
+                </tr>
+            `).join('');
+        };
+
+        const calculatePercentage = () => {
+            const roll = document.getElementById('studentRoll').value.trim();
+            const attendance = JSON.parse(localStorage.getItem('attendance') || '[]');
+            const studentRecords = attendance.filter(record => record.roll === roll);
+            const totalRecords = studentRecords.length;
+            const presentRecords = studentRecords.filter(record => record.status === 'Present').length;
+            const percentage = (presentRecords / totalRecords) * 100 || 0;
+
+            document.getElementById('percentageResult').textContent = `Attendance Percentage: ${percentage.toFixed(2)}%`;
+        };
+
+        const toggleLanguage = () => {
+            currentLanguage = currentLanguage === 'en' ? 'bn' : 'en';
+            document.getElementById('title').textContent = translations[currentLanguage].title;
+            document.getElementById('name').placeholder = translations[currentLanguage].namePlaceholder;
+            document.getElementById('roll').placeholder = translations[currentLanguage].rollPlaceholder;
+            document.getElementById('search').placeholder = translations[currentLanguage].searchPlaceholder;
+            document.getElementById('studentRoll').placeholder = translations[currentLanguage].percentagePlaceholder;
+            document.querySelector('button[onclick="markAttendance()"]').textContent = translations[currentLanguage].markAttendance;
+            document.querySelector('button[onclick="calculatePercentage()"]').textContent = translations[currentLanguage].calculatePercentage;
+        };
+
+        const toggleDarkMode = () => {
+            document.body.classList.toggle('dark-mode');
+        };
+
+        // Initial setup
+        window.addEventListener('DOMContentLoaded', () => {
             updateTable();
-            document.getElementById("status").innerText = "Attendance marked successfully!";
-        }
-
-        function updateTable() {
-            const attendance = JSON.parse(localStorage.getItem("attendance")) || [];
-            const tableBody = document.getElementById("attendanceTable");
-            tableBody.innerHTML = "";
-            attendance.forEach(record => {
-                let row = tableBody.insertRow();
-                row.insertCell(0).innerText = record.name;
-                row.insertCell(1).innerText = record.roll;
-                row.insertCell(2).innerText = record.trade;
-                row.insertCell(3).innerText = record.year;
-                row.insertCell(4).innerText = record.status;
-                row.insertCell(5).innerText = record.time;
-            });
-        }
-
-        window.onload = updateTable;
+            document.getElementById('name').focus();
+        });
     </script>
 </body>
 </html>
