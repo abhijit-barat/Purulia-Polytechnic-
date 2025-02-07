@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>College Attendance System</title>
+    <link rel="stylesheet" href="Script.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="header-section">
+            <h2 id="title">Purulia Polytechnic Attendance</h2>
+            <div class="button-group">
+                <button onclick="toggleLanguage()">বাংলা/English</button>
+                <button onclick="toggleDarkMode()">Theme</button>
+                <button onclick="showAdminPanel()">🔒</button>
+            </div>
+        </div>
+
+        <div class="input-group">
+            <input type="text" id="name" placeholder="Full Name" required>
+            <input type="text" id="roll" placeholder="Roll Number" required>
+            <select id="trade" required>
+                <option value="" disabled selected>Select Trade</option>
+                <option value="ME">Mechanical Engineering</option>
+                <option value="CE">Civil Engineering</option>
+                <option value="EE">Electrical Engineering</option>
+                <option value="MET">Metallurgy</option>
+                <option value="ETC">Electronics & Telecommunication</option>
+            </select>
+            <select id="year" required>
+                <option value="" disabled selected>Select Year</option>
+                <option value="1st Year">1st Year</option>
+                <option value="2nd Year">2nd Year</option>
+                <option value="3rd Year">3rd Year</option>
+            </select>
+        </div>
+
+        <div class="button-group">
+            <button onclick="markAttendance()">📅 Mark Attendance</button>
+        </div>
+
+        <div class="status-message" id="status"></div>
+        <div class="status-message" id="locationInfo"></div>
+
+        <h3 id="attendanceTitle">Attendance Records</h3>
+        <div class="input-group">
+            <input type="date" id="dateFilter" onchange="filterByDate()">
+            <input type="text" id="search" placeholder="Search..." oninput="searchRecords()">
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Roll</th>
+                    <th>Trade</th>
+                    <th>Year</th>
+                    <th>Status</th>
+                    <th>Time</th>
+                </tr>
+            </thead>
+            <tbody id="attendanceTable"></tbody>
+        </table>
+
+        <h3>Attendance Statistics</h3>
+        <div class="input-group">
+            <input type="text" id="studentRoll" placeholder="Enter Roll Number">
+            <button onclick="calculatePercentage()">📊 Calculate Percentage</button>
+        </div>
+        <div class="status-message" id="percentageResult"></div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
